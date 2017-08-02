@@ -9,6 +9,7 @@ struct Point
   ValueType x, y;
   Rank succ;
   bool extreme;
+  int index;
   Point(ValueType a = 0, ValueType b = 0)
 	:x(a), y(b) { }
 };

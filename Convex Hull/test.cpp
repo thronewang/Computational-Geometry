@@ -1,26 +1,36 @@
-#include "Jarvis.h"
-#include <iostream>
-
+#pragma warning (disable : 4996)
+#include "Graham.h"
+#include <stdio.h>
 using namespace std;
-
+const int SZ = 1<<21;   
+struct fastio{   //fast io
+    char inbuf[SZ];  
+    char outbuf[SZ];  
+    fastio(){  
+        setvbuf(stdin,inbuf,_IOFBF,SZ);  
+        setvbuf(stdout,outbuf,_IOFBF,SZ);  
+    }  
+}io; 
 int main()
 {
-  int x, y;
-  Point ps[11];
-  for (int i = 0; i < 11; ++i)
+  int n;
+  scanf("%d", &n);
+  Point * ps = new Point[n];
+  for (int i = 0; i < n; ++i)
   {
-	cin >> x >> y;
-	ps[i].x = x; ps[i].y = y;
+	scanf("%d %d", &ps[i].x, &ps[i].y);
+	ps[i].index = i + 1;
   }
-  Jarvis(ps, 11);
-  Rank cur = 0;
+  stack<Point> ans = Graham(ps, n);
+  long long out = 1;
+  int size = ans.size();
   do
   {
-	cout << "(" << ps[cur].x << "," << ps[cur].y << ")";
-	cur = ps[cur].succ;
-	if(cur != 0) cout << " --> ";
-  } while (cur != 0);
-  cout << endl;
-  system("pause");
+	out = (ans.top().index * out) % (n + 1);
+	ans.pop();
+  } while (!ans.empty());
+  out = (out * size) % (n + 1);
+  printf("%d\n", out);
+  delete[]ps;
   return 0;
 }
